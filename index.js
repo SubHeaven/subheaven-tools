@@ -1,4 +1,20 @@
 export default await (async() => {
+    let stack = async() => {
+        let stk = new Error().stack;
+        stk = stk.split('\n')[3].split('\\');
+        stk = stk.pop()
+        stk = stk.split(':')
+        stk = `${stk[0]}[${stk[1]}]`;
+        console.log(stk);
+    }
+
+    let debug = async (msg) => {
+        console.log("");
+        await stack();
+        console.log(msg);
+        console.log("");
+    }
+
     Array.prototype.forEachAsync = async function(fn) {
         let i = 0;
         for (let t of this) {
@@ -33,7 +49,9 @@ export default await (async() => {
     }
 
     const index = {
-        init: async() => {}
+        init: async() => {},
+        debug: debug
+
     }
 
     return index;
