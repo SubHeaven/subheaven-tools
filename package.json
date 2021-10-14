@@ -10,7 +10,6 @@
         "type": "git",
         "url": "git+https://github.com/SubHeaven/subheaven-tools.git"
     },
-    "type": "module",
     "author": "SubHeaven",
     "license": "ISC",
     "bugs": {
