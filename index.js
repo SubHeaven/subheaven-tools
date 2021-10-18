@@ -48,3 +48,11 @@ exports.debug = async (msg) => {
     console.log(msg);
     console.log("");
 }
+
+exports.exit = async (code) => {
+    console.log("");
+    await exports.stack();
+    console.log(`Finalizando processo com o código ${code}`);
+    console.log("");
+    process.exit(code);
+}

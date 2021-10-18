@@ -6,6 +6,7 @@ const tools = require('./index');
     await list.forEachAsync(async(item, index) => {
         console.log(`    ${index} - ${item}`);
     });
-    tools.debug("Terminou de passar a lista");
+    await tools.exit(9);
+    await tools.debug("Terminou de passar a lista");
     await tools.init();
 })();
