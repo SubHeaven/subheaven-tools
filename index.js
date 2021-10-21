@@ -53,6 +53,15 @@ exports.stack = async() => {
     console.log(stk);
 }
 
+exports.history = async(counter=0) => {
+    let stk = new Error().stack;
+    let stacks = stk.split('\n').splice(2);
+    if (stacks.length > counter) stacks = stacks.splice((stacks.length - counter));
+    console.log("");
+    console.log("Current stack:");
+    await stacks.forEachAsync(async stack => console.log(stack));
+}
+
 exports.debug = async (msg) => {
     console.log("");
     await exports.stack();
@@ -60,7 +69,7 @@ exports.debug = async (msg) => {
     console.log("");
 }
 
-exports.exit = async (code) => {
+exports.exit = async (code = 9) => {
     console.log("");
     await exports.stack();
     console.log(`Finalizando processo com o código ${code}`);
