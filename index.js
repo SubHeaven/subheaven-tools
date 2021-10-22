@@ -34,11 +34,18 @@ Number.prototype.toByteString = async function(si = false, dp = 1) {
 }
 
 exports.log = (name) => {
-    _logger = require('debug')(name);
+    let internal_log = require('debug')(name);
     return (msg) => {
         let now = new Date();
         now = `${now.getFullYear()}${(now.getMonth() + 1).toString().padStart(2, '0')}${now.getDay().toString().padStart(2, '0')}-${now.getHours().toString().padStart(2, '0')}${now.getMinutes().toString().padStart(2, '0')}${now.getSeconds().toString().padStart(2, '0')}`;
-        _logger(`[${now}] ${msg}`);
+        if (typeof msg === 'string') {
+            let lines = msg.split('\n');
+            lines.forEach(line => {
+                internal_log(`[${now}] ${line}`);
+            });
+        } else {
+            internal_log(`[${now}] ${msg}`);
+        }
     }
 }
 
