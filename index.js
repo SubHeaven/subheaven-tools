@@ -38,7 +38,6 @@ exports.log = (name) => {
     return (msg) => {
         let now = new Date();
         now = `${now.getFullYear()}${(now.getMonth() + 1).toString().padStart(2, '0')}${now.getDay().toString().padStart(2, '0')}-${now.getHours().toString().padStart(2, '0')}${now.getMinutes().toString().padStart(2, '0')}${now.getSeconds().toString().padStart(2, '0')}`;
-        console.log(typeof msg);
         if (typeof msg === 'object') {
             msg = JSON.stringify(msg, null, 4);
         }
