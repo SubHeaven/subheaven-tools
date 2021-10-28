@@ -60,7 +60,8 @@ exports.stack = async() => {
     stk = stk.pop()
     stk = stk.split(':')
     stk = `${stk[0]}[${stk[1]}]`;
-    console.log(stk);
+    process.stdout.write(stk);
+    process.stdout.write('\n');
 }
 
 exports.history = async(counter=0) => {
@@ -73,16 +74,18 @@ exports.history = async(counter=0) => {
 }
 
 exports.debug = async (msg) => {
-    console.log("");
+    process.stdout.write('\n');
     await exports.stack();
-    console.log(msg);
-    console.log("");
+    process.stdout.write(msg);
+    process.stdout.write('\n');
+    process.stdout.write('\n');
 }
 
 exports.exit = async (code = 9) => {
-    console.log("");
+    process.stdout.write('\n');
     await exports.stack();
-    console.log(`Finalizando processo com o código ${code}`);
-    console.log("");
+    process.stdout.write(`Finalizando processo com o código ${code}`);
+    process.stdout.write('\n');
+    process.stdout.write('\n');
     process.exit(code);
 }
