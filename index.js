@@ -68,17 +68,29 @@ exports.history = async(counter=0) => {
     let stk = new Error().stack;
     let stacks = stk.split('\n').splice(2);
     if (stacks.length > counter) stacks = stacks.splice((stacks.length - counter));
-    console.log("");
-    console.log("Current stack:");
-    await stacks.forEachAsync(async stack => console.log(stack));
+    process.stdout.write("");
+    process.stdout.write('\n');
+    process.stdout.write("Current stack:");
+    process.stdout.write('\n');
+    await stacks.forEachAsync(async stack => { 
+        process.stdout.write(stack);
+        process.stdout.write('\n');
+    });
 }
 
-exports.debug = async (msg) => {
+exports.debug = async function () {
+    process.stdout.write("");
     process.stdout.write('\n');
     await exports.stack();
-    process.stdout.write(msg);
-    process.stdout.write('\n');
-    process.stdout.write('\n');
+    for (var i = 0; i < arguments.length; i++) {
+        if (typeof arguments[i] === 'object') {
+            process.stdout.write(JSON.stringify(arguments[i], null, 4));
+            process.stdout.write('\n');
+        } else {
+            process.stdout.write(arguments[i]);
+            process.stdout.write('\n');
+        }
+    }
 }
 
 exports.exit = async (code = 9) => {
