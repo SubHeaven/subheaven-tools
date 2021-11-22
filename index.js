@@ -87,7 +87,7 @@ exports.debug = async function () {
             process.stdout.write(JSON.stringify(arguments[i], null, 4));
             process.stdout.write('\n');
         } else {
-            process.stdout.write(arguments[i]);
+            process.stdout.write(arguments[i].toString());
             process.stdout.write('\n');
         }
     }
