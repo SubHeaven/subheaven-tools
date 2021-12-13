@@ -86,6 +86,9 @@ exports.debug = async function () {
         if (typeof arguments[i] === 'object') {
             process.stdout.write(JSON.stringify(arguments[i], null, 4));
             process.stdout.write('\n');
+        } else if (typeof arguments[i] === 'undefined') {
+            process.stdout.write('undefined');
+            process.stdout.write('\n');
         } else {
             process.stdout.write(arguments[i].toString());
             process.stdout.write('\n');
