@@ -54,34 +54,46 @@ exports.log = (name) => {
 
 exports.init = async() => {};
 
-exports.stack = async() => {
-    let stk = new Error().stack;
-    stk = stk.split('\n')[3].split('\\');
-    stk = stk.pop()
-    stk = stk.split(':')
-    stk = `${stk[0]}[${stk[1]}]`;
-    process.stdout.write(stk);
-    process.stdout.write('\n');
-}
-
-exports.history = async(counter=0) => {
-    let stk = new Error().stack;
-    let stacks = stk.split('\n').splice(2);
-    if (stacks.length > counter) stacks = stacks.splice((stacks.length - counter));
-    process.stdout.write("");
-    process.stdout.write('\n');
-    process.stdout.write("Current stack:");
-    process.stdout.write('\n');
-    await stacks.forEachAsync(async stack => { 
-        process.stdout.write(stack);
+exports.stack = async(size=1, clear=false) => {
+    let base_list = new Error().stack;
+    base_list = base_list.split('\n');
+    let lista = [];
+    for (i=0;i<base_list.length-1;i++) {
+        if (base_list[i].indexOf('(') > -1) {
+            line = base_list[i].split('(')[1].split(')')[0];
+        } else if (base_list[i].indexOf('at ') > -1) {
+            line = base_list[i].split('at ')[1];
+        } else {
+            line = base_list[i];
+        }
+        if (line.length >= 9 && line.substr(0, 9) !== 'internal/') {
+            lista.push(line)
+        }
+    }
+    
+    lista = lista.reverse();
+    let comma = '';
+    if (!clear) {
+        process.stdout.write("Current stack:");
         process.stdout.write('\n');
-    });
+        comma = '    ';
+    }
+    lista.pop()
+    let start = 0;
+    if (size < lista.length) {
+        start = lista.length - size;
+    }
+
+    for (i=start;i<lista.length;i++) {
+        process.stdout.write(`${comma}${lista[i]}`);
+        process.stdout.write('\n');
+    }
 }
 
 exports.debug = async function () {
     process.stdout.write("");
     process.stdout.write('\n');
-    await exports.stack();
+    await exports.stack(1, clear=true);
     for (var i = 0; i < arguments.length; i++) {
         if (typeof arguments[i] === 'object') {
             process.stdout.write(JSON.stringify(arguments[i], null, 4));
