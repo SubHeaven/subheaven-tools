@@ -137,3 +137,7 @@ exports.now = async () => {
     let sc = now.getSeconds().toString().padStart(2, '0');
     return `${yr}-${mo}-${dy} ${ho}:${mi}:${sc}`;
 }
+
+exports.title = (title) => {
+    process.stdout.write(String.fromCharCode(27) + "]0;" + title + String.fromCharCode(7));
+}
