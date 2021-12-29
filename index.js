@@ -116,3 +116,14 @@ exports.exit = async (code = 9) => {
     process.stdout.write('\n');
     process.exit(code);
 }
+
+exports.now = async () => {
+    let now = new Date();
+    let yr = now.getFullYear();
+    let mo = (now.getMonth() + 1).toString().padStart(2, '0');
+    let dy = now.getDate().toString().padStart(2, '0');
+    let ho = now.getHours().toString().padStart(2, '0');
+    let mi = now.getMinutes().toString().padStart(2, '0');
+    let sc = now.getSeconds().toString().padStart(2, '0');
+    return `${yr}-${mo}-${dy} ${ho}:${mi}:${sc}`;
+}
