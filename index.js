@@ -54,31 +54,41 @@ exports.log = (name) => {
 
 exports.init = async() => {};
 
-exports.stack = async(size=1, clear=false) => {
+exports.stack = async(size=1, clear=false, internal=false) => {
     let base_list = new Error().stack;
     base_list = base_list.split('\n');
     let lista = [];
-    for (i=0;i<base_list.length-1;i++) {
-        if (base_list[i].indexOf('(') > -1) {
-            line = base_list[i].split('(')[1].split(')')[0];
-        } else if (base_list[i].indexOf('at ') > -1) {
-            line = base_list[i].split('at ')[1];
-        } else {
-            line = base_list[i];
-        }
-        if (line.length >= 9 && line.substr(0, 9) !== 'internal/') {
-            lista.push(line)
-        }
+
+    const is_valid_line = async (line) => {
+        return (line.indexOf('node_modules\\subheaven-tools') === -1 && line.indexOf('subheaven-tools\\index.js') === -1);
     }
-    
+
+    await base_list.forEachAsync(async item => {
+        if (item.indexOf('(') > -1) {
+            line = item.split('(')[1].split(')')[0];
+        } else if (item.indexOf('at ') > -1) {
+            line = item.split('at ')[1];
+        } else {
+            line = item;
+        }
+
+        if (line.length >= 9 && line.indexOf('internal/') === -1) {
+            let valid_line = await is_valid_line(line);
+            if (internal || valid_line) {
+                lista.push(line);
+            }
+        }
+    })
+
     lista = lista.reverse();
+    process.stdout.write('\n');
     let comma = '';
     if (!clear) {
         process.stdout.write("Current stack:");
         process.stdout.write('\n');
         comma = '    ';
     }
-    lista.pop()
+
     let start = 0;
     if (size < lista.length) {
         start = lista.length - size;
